@@ -21,6 +21,7 @@
 
 force_tty_width = None # a char width or None for auto-sensing
 
+default_color = 'white'
 staged_color = 'green'
 unstaged_color = 'red'
 untracked_color = 'blue on white'

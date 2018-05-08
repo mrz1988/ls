@@ -34,9 +34,9 @@ def unstaged_color():
     return config.unstaged_color
 
 def file_color():
-    if config.unstaged_color is None:
+    if config.default_color is None:
         return 'white'
-    return config.unstaged_color
+    return config.default_color
 
 def format_git_output(s):
     print(str(s))
