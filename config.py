@@ -27,4 +27,4 @@ unstaged_color = 'red'
 untracked_color = 'blue on white'
 dir_color = 'yellow'
 link_color = 'magenta'
-show_branch = False
+show_branch = True

@@ -84,11 +84,12 @@ if __name__ == '__main__':
     git_output = Popen('git status', shell=True, stdout=PIPE, stderr=STDOUT).stdout
     git_output = str(git_output.read())
     git_output = GitOutput(git_output)
-    print("")
-    if git_output.branch is not None:
-        print("Currently on branch: '" + grow(git_output.branch, 'green') + "'")
-    else:
-        print(grow("(Not a git repository)", "blue"))
-    print("")
+    if config.show_branch:
+        print("")
+        if git_output.branch is not None:
+            print("Currently on branch: '" + grow(git_output.branch, 'green') + "'")
+        else:
+            print(grow("(Not a git repository)", "blue"))
+        print("")
     printls(git_output)
     print("")
