@@ -3,9 +3,40 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 from lilies import grow, columnify
 from git import GitOutput
-cwd = os.getcwd()
-_, width = os.popen('stty size', 'r').read().split()
-width = int(width)
+import config
+
+def tty_width():
+    if not config.force_tty_width is None:
+        return config.force_tty_width
+    else:
+        cwd = os.getcwd()
+        _, width = os.popen('stty size', 'r').read().split()
+        return int(width)
+
+def dir_color():
+    if config.dir_color is None:
+        return 'yellow'
+    return config.dir_color
+
+def untracked_color():
+    if config.untracked_color is None:
+        return 'magenta'
+    return config.untracked_color
+
+def staged_color():
+    if config.staged_color is None:
+        return 'green'
+    return config.staged_color
+
+def unstaged_color():
+    if config.unstaged_color is None:
+        return 'red'
+    return config.unstaged_color
+
+def file_color():
+    if config.unstaged_color is None:
+        return 'white'
+    return config.unstaged_color
 
 def format_git_output(s):
     print(str(s))
@@ -16,23 +47,23 @@ def format_git_output(s):
         print('stuff')
 
 def format_dir(s):
-    return grow(s + '/', 'yellow')
+    return grow(s + '/', dir_color())
 
 def format_link(s):
     return grow(s, 'magenta')
 
 def format_file(s, git_output):
-    color = 'white'
+    color = file_color()
     if s in git_output.staged_files:
-        color = 'green'
+        color = staged_color()
     elif s in git_output.unstaged_files:
-        color = 'red'
+        color = unstaged_color()
     elif s in git_output.untracked_files:
-        color = 'magenta'
+        color = untracked_color()
     return grow(s, color)
 
 def printls(git_output):
-    entries = os.listdir(cwd)
+    entries = os.listdir(os.getcwd())
     if len(entries) == 0:
         print(grow("(This directory is empty)", "magenta"))
         return False
@@ -45,7 +76,7 @@ def printls(git_output):
     files = map(lambda f: format_file(f, git_output), files)
 
     colored = list(dirs) + list(links) + list(files)
-    columnify(colored, width=width)
+    columnify(colored, width=tty_width())
     return True
 
 
