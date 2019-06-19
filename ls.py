@@ -76,7 +76,7 @@ def printls(git_output):
     files = map(lambda f: format_file(f, git_output), files)
 
     colored = list(dirs) + list(links) + list(files)
-    columnify(colored, width=tty_width())
+    print(columnify(colored, width=tty_width()))
     return True
 
 
