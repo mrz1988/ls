@@ -67,16 +67,16 @@ def printls(git_output):
     if len(entries) == 0:
         print(grow("(This directory is empty)", "magenta"))
         return False
-    dirs = filter(os.path.isdir, entries)
-    links = filter(os.path.islink, entries)
-    files = filter(os.path.isfile, entries)
+    dirs = sorted(filter(os.path.isdir, entries))
+    links = sorted(filter(os.path.islink, entries))
+    files = sorted(filter(os.path.isfile, entries))
 
     dirs = map(format_dir, dirs)
     links = map(format_link, links)
     files = map(lambda f: format_file(f, git_output), files)
 
     colored = list(dirs) + list(links) + list(files)
-    print(columnify(colored, width=tty_width()))
+    print(columnify(colored, width=tty_width(), sort=False))
     return True
 
 
