@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 from subprocess import Popen, PIPE, STDOUT
-from lilies import grow, columnify
+from lilies import grow, columnify, sortify
 from git import GitOutput
 import config
 
@@ -71,12 +71,12 @@ def printls(git_output):
     links = filter(os.path.islink, entries)
     files = filter(os.path.isfile, entries)
 
-    dirs = map(format_dir, dirs)
-    links = map(format_link, links)
-    files = map(lambda f: format_file(f, git_output), files)
+    dirs = map(format_dir, sorted(dirs))
+    links = map(format_link, sorted(links))
+    files = map(lambda f: format_file(f, git_output), sorted(files))
 
     colored = list(dirs) + list(links) + list(files)
-    print(columnify(colored, width=tty_width()))
+    print(columnify(colored, width=tty_width(), sort=False))
     return True
 
 
